@@ -1,0 +1,72 @@
+:root * {
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	/* display: flex; */
+	/* flex-direction: row; */
+	/* justify-content: center; */
+	/* align-items: center; */
+	/* place-items: center; */
+}
+
+.countdown-container {
+	padding: 1.5rem;
+	border-radius: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	/* place-items: center; */
+	gap: 1rem;
+	border: 2px solid black;
+	min-height: 15rem;
+	background-color: #333;
+
+	.heading {
+		/* place-self: start; */
+		/* justify-self: start; */
+		/* align-self: flex-start; */
+		/* align-self: self-start; */
+		/* place-self: start; */
+	}
+
+	> .timer {
+		min-height: 4rem;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		/* aspect-ratio: 1/1; */
+	}
+}
+button {
+	border-radius: 8px;
+	border: 1px solid transparent;
+	padding: 0.6em 1.2em;
+	font-size: 1em;
+	font-weight: 500;
+	font-family: inherit;
+	background-color: #1a1a1a;
+	cursor: pointer;
+	transition: border-color 0.25s;
+
+	&:hover {
+		border-color: #646cff;
+	}
+}
+
+.buttons {
+	gap: 0.5rem;
+	> * {
+		width: 100%;
+	}
+}
+
+.flex-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
