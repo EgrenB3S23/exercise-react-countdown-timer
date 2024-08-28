@@ -3,28 +3,93 @@ import React, { useState, useEffect, useRef } from "react";
 import "./CountdownTimer.css";
 
 function CountdownTimer() {
-	const [timeLeft, setTimeLeft] = useState<number>(10);
+	let [timeLeft, setTimeLeft] = useState<number>(5);
 	const [isActive, setIsActive] = useState<boolean>(false);
 
-	const ref = useRef(0);
+	const timerRef = useRef<NodeJS.Timeout | null>(null); // hålla referensen till timern
 
-	// const [edit, setEdit] = useState<boolean>(false);
-	// const [title, setTitle] = useState<string>(book.title);
-	// const [author, setAuthor] = useState<string>(book.author);
-	// const [isbn] = useState<number>(book.isbn);
-	// const [rating, setRating] = useState<number>(book.rating);
+	useEffect(() => {
+		console.log("useEffect triggered");
+		// starta interval
+		if (isActive && timeLeft > 0) {
+			timerRef.current = setInterval(() => {
+				// decrement;
+				setTimeLeft(timeLeft - 1);
+
+				console.log("timeLeft:", timeLeft);
+			}, 1000);
+		} else if (timeLeft === 0) {
+			setIsActive(false);
+		}
+		return () => {
+			if (timerRef.current) {
+				clearInterval(timerRef.current);
+			}
+		};
+	}, [timeLeft, isActive]);
+
+	function startTimer() {
+		console.log("in startTimer...");
+
+		// if (timerRef.current !== null) return;
+		console.log("start");
+
+		setIsActive(true);
+	}
+
+	function stopTimer() {
+		console.log("in stopTimer...");
+		setIsActive(false);
+		return;
+	}
+
+	function resetTimer() {
+		console.log("in resetTimer...");
+		// clearInterval(timerRef.current);
+		// timerRef.current = null;
+		setIsActive(false);
+		setTimeLeft(5);
+
+		return;
+	}
+
+	const decrement = () => {
+		console.log("in decrement...");
+		setTimeLeft(timeLeft - 1);
+		console.log("time left:", timeLeft);
+	};
+
+	const increment = () => {
+		console.log("in increment...");
+		setTimeLeft(timeLeft + 1);
+		console.log("time left:", timeLeft);
+	};
 
 	return (
-		<div className="countdown-container">
+		<div className="timer-container">
 			<h1 className="heading">Countdown timer</h1>
 			{/* <h2>{timeLeft} sekunder kvar</h2> */}
 			<div className="timer">
-				<h3>1</h3>
+				<h4>{timeLeft} seconds remaining</h4>
 			</div>
 			<div className="buttons flex-row">
-				<button>Start</button>
-				<button>Pause</button>
-				<button>Reset</button>
+				<button id="startTimerBtn" onClick={startTimer}>
+					Start
+				</button>
+				<button id="pauseTimerBtn" onClick={stopTimer}>
+					Pause
+				</button>
+				<button id="resetTimerBtn" onClick={resetTimer}>
+					Reset
+				</button>
+				<div className="vertical-button-group">
+					<button id="incrementBtn" className="half-height" onClick={increment}>
+						+
+					</button>
+					<button id="decrementBtn" className="half-height" onClick={decrement}>
+						-
+					</button>
+				</div>
 			</div>
 		</div>
 	);

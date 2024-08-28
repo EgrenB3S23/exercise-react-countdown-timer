@@ -41,6 +41,19 @@ body {
 		/* aspect-ratio: 1/1; */
 	}
 }
+
+.vertical-button-group {
+	display: flex;
+	flex-direction: column;
+	/* max-height: 5rem; */
+	/* height: 0rem; */
+
+	> button {
+		/* min-width: 4rem; */
+		/* height: 50%; */
+	}
+}
+
 button {
 	border-radius: 8px;
 	border: 1px solid transparent;
