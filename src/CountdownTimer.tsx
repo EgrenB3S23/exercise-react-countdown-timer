@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./CountdownTimer.css";
 
 function CountdownTimer() {
-	let [timeLeft, setTimeLeft] = useState<number>(5);
+	let [timeLeft, setTimeLeft] = useState<number>(10);
 	const [isActive, setIsActive] = useState<boolean>(false);
 
 	const timerRef = useRef<NodeJS.Timeout | null>(null); // hålla referensen till timern
@@ -33,7 +33,6 @@ function CountdownTimer() {
 
 		// if (timerRef.current !== null) return;
 		console.log("start");
-
 		setIsActive(true);
 	}
 
@@ -43,19 +42,28 @@ function CountdownTimer() {
 		return;
 	}
 
+	function toggleTimer() {
+		if (isActive) {
+			stopTimer();
+		} else {
+			startTimer();
+		}
+	}
+
 	function resetTimer() {
 		console.log("in resetTimer...");
 		// clearInterval(timerRef.current);
 		// timerRef.current = null;
 		setIsActive(false);
-		setTimeLeft(5);
-
+		setTimeLeft(10);
 		return;
 	}
 
 	const decrement = () => {
 		console.log("in decrement...");
-		setTimeLeft(timeLeft - 1);
+		if (timeLeft > 0) {
+			setTimeLeft(timeLeft - 1);
+		}
 		console.log("time left:", timeLeft);
 	};
 
@@ -70,18 +78,22 @@ function CountdownTimer() {
 			<h1 className="heading">Countdown timer</h1>
 			{/* <h2>{timeLeft} sekunder kvar</h2> */}
 			<div className="timer">
-				<h4>{timeLeft} seconds remaining</h4>
+				<h1 className="timer-number">{timeLeft}</h1>
 			</div>
 			<div className="buttons flex-row">
-				<button id="startTimerBtn" onClick={startTimer}>
-					Start
+				<button id="toggleTimerBtn" onClick={toggleTimer}>
+					{isActive ? "🔴Stop" : "🟢Start"}
+				</button>
+				{/* <button id="startTimerBtn" onClick={startTimer}>
+					🟢Start
 				</button>
 				<button id="pauseTimerBtn" onClick={stopTimer}>
-					Pause
-				</button>
+					🔴Pause
+				</button> */}
 				<button id="resetTimerBtn" onClick={resetTimer}>
-					Reset
+					🔄Reset
 				</button>
+
 				<div className="vertical-button-group">
 					<button id="incrementBtn" className="half-height" onClick={increment}>
 						+
@@ -90,7 +102,9 @@ function CountdownTimer() {
 						-
 					</button>
 				</div>
+				{/* <input id="secondsInput" type="number" value={10} /> */}
 			</div>
+			<div className="buttons flex-row"></div>
 		</div>
 	);
 }
