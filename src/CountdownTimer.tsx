@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-// import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./CountdownTimer.css";
+import { log } from "console";
 
 function CountdownTimer() {
 	let [timeLeft, setTimeLeft] = useState<number>(10);
@@ -8,37 +8,45 @@ function CountdownTimer() {
 
 	const timerRef = useRef<NodeJS.Timeout | null>(null); // hålla referensen till timern
 
+	// /*
 	useEffect(() => {
-		console.log("useEffect triggered");
-		// starta interval
 		if (isActive && timeLeft > 0) {
 			timerRef.current = setInterval(() => {
-				// decrement;
-				setTimeLeft(timeLeft - 1);
-				// setTimeLeft((timeLeft) => timeLeft - 1);
-
-				console.log("timeLeft:", timeLeft);
+				setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
 			}, 1000);
-		} else if (timeLeft === 0) {
-			setIsActive(false);
+		} else if (!isActive || timeLeft === 0) {
+			if (timerRef.current) {
+				console.log("resetting interval and timerRef...");
+				clearInterval(timerRef.current);
+				timerRef.current = null;
+			}
 		}
 		return () => {
+			// "cleanup" function.
+			console.log("in useEffect cleanup function...");
 			if (timerRef.current) {
+				console.log("resetting interval and timerRef...");
 				clearInterval(timerRef.current);
+				timerRef.current = null;
 			}
 		};
-	}, [timeLeft, isActive]);
+	}, [isActive]);
+
+	useEffect(() => {
+		if (timeLeft === 0) {
+			setIsActive(false);
+			// alert("Ding ding ding!");
+		}
+	}, [timeLeft]);
+	// */
 
 	function startTimer() {
-		console.log("in startTimer...");
-
-		// if (timerRef.current !== null) return;
-		console.log("start");
+		console.log("in startTimer()...");
 		setIsActive(true);
 	}
 
 	function stopTimer() {
-		console.log("in stopTimer...");
+		console.log("in stopTimer()...");
 		setIsActive(false);
 		return;
 	}
@@ -75,7 +83,6 @@ function CountdownTimer() {
 	return (
 		<div className="timer-container">
 			<h1 className="heading">Countdown timer</h1>
-			{/* <h2>{timeLeft} sekunder kvar</h2> */}
 			<div className="timer">
 				<h1 className="timer-number">{timeLeft}</h1>
 			</div>
@@ -101,6 +108,7 @@ function CountdownTimer() {
 						-
 					</button>
 				</div>
+				{/* disabled input field, stickikng to increment/decrement buttons for now...: */}
 				{/* <input id="secondsInput" type="number" defaultValue={10} /> */}
 			</div>
 			<div className="buttons flex-row"></div>
