@@ -15,6 +15,7 @@ function CountdownTimer() {
 			timerRef.current = setInterval(() => {
 				// decrement;
 				setTimeLeft(timeLeft - 1);
+				// setTimeLeft((timeLeft) => timeLeft - 1);
 
 				console.log("timeLeft:", timeLeft);
 			}, 1000);
@@ -52,8 +53,6 @@ function CountdownTimer() {
 
 	function resetTimer() {
 		console.log("in resetTimer...");
-		// clearInterval(timerRef.current);
-		// timerRef.current = null;
 		setIsActive(false);
 		setTimeLeft(10);
 		return;
@@ -82,7 +81,7 @@ function CountdownTimer() {
 			</div>
 			<div className="buttons flex-row">
 				<button id="toggleTimerBtn" onClick={toggleTimer}>
-					{isActive ? "🔴Stop" : "🟢Start"}
+					{isActive ? "🔴Pause" : "🟢Start"}
 				</button>
 				{/* <button id="startTimerBtn" onClick={startTimer}>
 					🟢Start
@@ -102,7 +101,7 @@ function CountdownTimer() {
 						-
 					</button>
 				</div>
-				{/* <input id="secondsInput" type="number" value={10} /> */}
+				{/* <input id="secondsInput" type="number" defaultValue={10} /> */}
 			</div>
 			<div className="buttons flex-row"></div>
 		</div>
